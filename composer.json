@@ -1,0 +1,60 @@
+{
+    "name": "rennokki/laravel-mjml",
+    "description": "Laravel MJML offers support for rendering MJML syntax into in-line HTML that can be sent within mails.",
+    "keywords": [
+        "laravel",
+        "mjml",
+        "wrapper",
+        "api",
+        "mjmlio",
+        "mails",
+        "mail",
+        "email",
+        "emails",
+        "template",
+        "templates"
+    ],
+    "homepage": "https://github.com/rennokki/laravel-mjml",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Alex Renoki",
+            "email": "rennokki@gmail.com",
+            "homepage": "https://twitter.com/rennokki",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "guzzlehttp/guzzle": "^6.3@dev",
+        "mustache/mustache": "dev-master"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^6.2|^7.0",
+        "orchestra/testbench": "~3.5.0|~3.6.0",
+        "orchestra/database": "~3.5.0|~3.6.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Rennokki\\LaravelMJML\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Rennokki\\LaravelMJML\\Test\\": "tests"
+        }
+    },
+    "scripts": {
+        "test": "vendor/bin/phpunit"
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Rennokki\\LaravelMJML\\LaravelMJMLServiceProvider"
+            ]
+        }
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "minimum-stability": "dev"
+}
