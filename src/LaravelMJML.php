@@ -4,8 +4,8 @@ namespace Rennokki\LaravelMJML;
 
 use GuzzleHttp\Client as GuzzleClient;
 
-class LaravelMJML {
-
+class LaravelMJML
+{
     private $secretKey;
     protected $appId;
     public $publicKey;
@@ -73,13 +73,13 @@ class LaravelMJML {
                 'auth' => [$this->appId, $this->secretKey],
                 'headers' => [
                     'Content-Type' => 'application/x-www-form-urlencoded',
-                    'Accepts' => 'application/json'
+                    'Accepts' => 'application/json',
                 ],
                 \GuzzleHttp\RequestOptions::JSON => [
                     'mjml' => $mjml,
                 ],
             ]);
-        } catch(\GuzzleHttp\Exception\ClientException $e) {
+        } catch (\GuzzleHttp\Exception\ClientException $e) {
             return json_decode($e->getResponse()->getBody()->getContents());
         }
 
@@ -95,9 +95,9 @@ class LaravelMJML {
     public function render(string $mjml)
     {
         $request = $this->renderRequest($mjml);
-        
-        if(property_exists($request, 'status_code') && $request->status_code != 200) {
-            return null;
+
+        if (property_exists($request, 'status_code') && $request->status_code != 200) {
+            return;
         }
 
         return $request->html;
