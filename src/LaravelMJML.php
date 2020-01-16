@@ -3,18 +3,58 @@
 namespace Rennokki\LaravelMJML;
 
 use GuzzleHttp\Client as GuzzleClient;
+use GuzzleHttp\Exception\ClientException;
+use GuzzleHttp\RequestOptions;
 
 class LaravelMJML
 {
+    /**
+     * The secret key.
+     *
+     * @var string
+     */
     private $secretKey;
+
+    /**
+     * The App ID.
+     *
+     * @var string
+     */
     protected $appId;
+
+    /**
+     * The public key.
+     *
+     * @var string
+     */
     public $publicKey;
 
+    /**
+     * The Guzzle client instance.
+     *
+     * @var \GuzzleHttp\Client
+     */
     protected $client;
+
+    /**
+     * The Mustache engine instance.
+     *
+     * @var Mustache_Engine
+     */
     protected $mustache;
 
+    /**
+     * The API endpoint.
+     *
+     * @var string
+     */
     public static $apiEndpoint = 'https://api.mjml.io/v1';
 
+    /**
+     * Initialize the class.
+     *
+     * @return void
+     */
     public function __construct()
     {
         $this->client = new GuzzleClient();
@@ -24,7 +64,7 @@ class LaravelMJML
     /**
      * Set the public key.
      *
-     * @param string $publicKey
+     * @param  string  $publicKey
      * @return void
      */
     public function setPublicKey(string $publicKey)
@@ -37,7 +77,7 @@ class LaravelMJML
     /**
      * Set the secret key.
      *
-     * @param string $secretKey
+     * @param  string  $secretKey
      * @return void
      */
     public function setSecretKey(string $secretKey)
@@ -50,7 +90,7 @@ class LaravelMJML
     /**
      * Set the App ID.
      *
-     * @param string $appId
+     * @param  string  $appId
      * @return void
      */
     public function setAppId(string $appId)
@@ -63,40 +103,44 @@ class LaravelMJML
     /**
      * Getting the request response (in JSON) for rendering MJML.
      *
-     * @param string $mjml
+     * @param  string  $mjml
      * @return string
      */
     public function renderRequest(string $mjml)
     {
         try {
-            $request = $this->client->request('POST', Self::$apiEndpoint.'/render', [
+            $request = $this->client->request('POST', self::$apiEndpoint.'/render', [
                 'auth' => [$this->appId, $this->secretKey],
                 'headers' => [
                     'Content-Type' => 'application/x-www-form-urlencoded',
                     'Accepts' => 'application/json',
                 ],
-                \GuzzleHttp\RequestOptions::JSON => [
+                RequestOptions::JSON => [
                     'mjml' => $mjml,
                 ],
             ]);
-        } catch (\GuzzleHttp\Exception\ClientException $e) {
-            return json_decode($e->getResponse()->getBody()->getContents());
+        } catch (ClientException $e) {
+            return json_decode(
+                $e->getResponse()->getBody()->getContents()
+            );
         }
 
-        return json_decode($request->getBody());
+        return json_decode(
+            $request->getBody()
+        );
     }
 
     /**
      * Getting the rendered HTML for a specified MJML.
      *
-     * @param string $mjml
+     * @param  string  $mjml
      * @return string|null
      */
     public function render(string $mjml)
     {
         $request = $this->renderRequest($mjml);
 
-        if (property_exists($request, 'status_code') && $request->status_code != 200) {
+        if (property_exists($request, 'status_code') && $request->status_code !== 200) {
             return;
         }
 
@@ -106,8 +150,8 @@ class LaravelMJML
     /**
      * Rendering the MJML given and apllying mustache render on it.
      *
-     * @param string $mjml
-     * @param array $parameters
+     * @param  string  $mjml
+     * @param  array  $parameters
      * @return string|null
      */
     public function renderWithMustache(string $mjml, array $parameters = [])

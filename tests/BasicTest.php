@@ -6,11 +6,39 @@ use Rennokki\LaravelMJML\LaravelMJML;
 
 class BasicTest extends TestCase
 {
+    /**
+     * The good MJML code.
+     *
+     * @var string
+     */
     protected $goodMjml;
+
+    /**
+     * The bad MJML code.
+     *
+     * @var string
+     */
     protected $badMjml;
+
+    /**
+     * Mustache MJML written.
+     *
+     * @var string
+     */
     protected $mustacheMjml;
+
+    /**
+     * The API instance.
+     *
+     * @var \Rennokki\LaravelMJML\LaravelMJML
+     */
     protected $mjmlApi;
 
+    /**
+     * Set up the tests.
+     *
+     * @return void
+     */
     public function setUp()
     {
         parent::setUp();

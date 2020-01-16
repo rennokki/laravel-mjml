@@ -6,11 +6,12 @@ use Orchestra\Testbench\TestCase as Orchestra;
 
 abstract class TestCase extends Orchestra
 {
-    public function setUp()
-    {
-        parent::setUp();
-    }
-
+    /**
+     * Get the package providers for tests.
+     *
+     * @param  mixed  $app
+     * @return array
+     */
     protected function getPackageProviders($app)
     {
         return [
@@ -18,6 +19,12 @@ abstract class TestCase extends Orchestra
         ];
     }
 
+    /**
+     * Environment setup.
+     *
+     * @param  mixed  $app
+     * @return void
+     */
     public function getEnvironmentSetUp($app)
     {
         $app['config']->set('app.key', 'wslxrEFGWY6GfGhvN9L3wH3KSRJQQpBD');
